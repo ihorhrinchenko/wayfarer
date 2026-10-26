@@ -46,6 +46,14 @@ body {
 body.modal-open {
   overflow: hidden;
 }
+::view-transition-old(root) {
+  animation-duration: 180ms;
+  animation-timing-function: ease-out;
+}
+::view-transition-new(root) {
+  animation-duration: 260ms;
+  animation-timing-function: ease-in;
+}
 button,
 input,
 select,
@@ -321,12 +329,19 @@ svg {
   font-size: 11px;
   font-weight: 700;
   display: flex;
-  gap: 6px;
   align-items: center;
-  padding: 8px 4px;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 8px 6px;
+  border-radius: 6px;
+  transition:
+    color 0.2s,
+    background 0.2s;
 }
-.chevron {
-  font-size: 14px;
+.language-button:hover {
+  color: var(--green);
+  background: var(--soft);
 }
 .theme-picker {
   position: relative;
@@ -1388,13 +1403,22 @@ svg {
   display: none;
 }
 .faq-list summary:after {
-  content: "+";
-  font-size: 21px;
-  font-weight: 400;
-  color: var(--green);
+  content: "";
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  background:
+    linear-gradient(var(--green), var(--green)) center / 100% 1px no-repeat,
+    linear-gradient(var(--green), var(--green)) center / 1px 100% no-repeat;
+  transition:
+    background-size 0.24s ease,
+    transform 0.34s ease;
 }
-.faq-list details[open] summary:after {
-  content: "−";
+.faq-list details[data-expanded="true"] summary:after {
+  background-size:
+    100% 1px,
+    1px 0%;
+  transform: rotate(180deg);
 }
 .faq-list details p {
   font-size: 11px;

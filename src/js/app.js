@@ -104,6 +104,8 @@ const icons = {
   leaf: '<path d="M20 3C7 2 2 8 5 16c8 4 14-1 15-13ZM4 21l11-12"/>',
   instagram:
     '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/>',
+  pinterest:
+    '<path fill="currentColor" stroke="none" d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/>',
   share:
     '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.5 6.8-4m-6.8 7 6.8 4"/>',
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/>',
@@ -329,15 +331,64 @@ const faqs = {
     ],
   ],
 };
+const faqAnimations = new WeakMap();
 function renderFaq() {
-  const opened = $$(".faq-list details").map((d, i) => (d.open ? i : -1));
+  const items = $$("#faq-list details");
+  const opened = items.findIndex((item) => item.dataset.expanded === "true");
+  items.forEach((item) => faqAnimations.get(item)?.cancel());
   $("#faq-list").innerHTML = faqs[state.lang]
     .map(
       ([q, a], i) =>
-        `<details ${opened.includes(i) ? "open" : ""}><summary>${q}</summary><p>${a}</p></details>`,
+        `<details data-expanded="${opened === i}" ${opened === i ? "open" : ""}><summary aria-expanded="${opened === i}">${q}</summary><p>${a}</p></details>`,
     )
     .join("");
 }
+function setFaqExpanded(item, expanded) {
+  const startHeight = item.getBoundingClientRect().height;
+  faqAnimations.get(item)?.cancel();
+  faqAnimations.delete(item);
+  item.dataset.expanded = String(expanded);
+  $("summary", item).setAttribute("aria-expanded", String(expanded));
+  item.style.height = "";
+  item.style.overflow = "";
+
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    item.open = expanded;
+    return;
+  }
+
+  // Keep the answer rendered until the closing animation has finished.
+  item.open = true;
+  const endHeight =
+    item.getBoundingClientRect().height -
+    (expanded ? 0 : $("p", item).getBoundingClientRect().height);
+  item.style.height = `${startHeight}px`;
+  item.style.overflow = "hidden";
+  const animation = item.animate(
+    { height: [`${startHeight}px`, `${endHeight}px`] },
+    { duration: 340, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+  );
+  faqAnimations.set(item, animation);
+  animation.onfinish = () => {
+    item.open = expanded;
+    item.style.height = "";
+    item.style.overflow = "";
+    faqAnimations.delete(item);
+  };
+}
+$("#faq-list").addEventListener("click", (event) => {
+  const summary = event.target.closest("summary");
+  if (!summary) return;
+  event.preventDefault();
+  const item = summary.closest("details");
+  const expanded = item.dataset.expanded !== "true";
+  if (expanded) {
+    $$('#faq-list details[data-expanded="true"]').forEach((other) => {
+      if (other !== item) setFaqExpanded(other, false);
+    });
+  }
+  setFaqExpanded(item, expanded);
+});
 function showDetails(id, experienceId = null) {
   const p = places.find((item) => item.id === id);
   if (!p) return;
@@ -655,10 +706,41 @@ $("#show-more").addEventListener("click", () => {
     preventScroll: true,
   });
 });
-$("#language-button").addEventListener("click", () => {
-  state.lang = state.lang === "en" ? "de" : "en";
-  persist("lang", state.lang);
-  renderAll();
+let isSwitchingLanguage = false;
+$("#language-button").addEventListener("click", async () => {
+  if (isSwitchingLanguage) return;
+  const update = () => {
+    state.lang = state.lang === "en" ? "de" : "en";
+    persist("lang", state.lang);
+    renderAll();
+  };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    update();
+    return;
+  }
+
+  isSwitchingLanguage = true;
+  let fadeOut;
+  try {
+    if (document.startViewTransition) {
+      await document.startViewTransition(update).finished;
+    } else {
+      fadeOut = document.body.animate(
+        { opacity: [1, 0] },
+        { duration: 100, easing: "ease-out", fill: "forwards" },
+      );
+      await fadeOut.finished;
+      update();
+      fadeOut.cancel();
+      await document.body.animate(
+        { opacity: [0, 1] },
+        { duration: 180, easing: "ease-in" },
+      ).finished;
+    }
+  } finally {
+    fadeOut?.cancel();
+    isSwitchingLanguage = false;
+  }
 });
 $("#theme-button").addEventListener("click", () => {
   const open = $("#theme-menu").hidden;
