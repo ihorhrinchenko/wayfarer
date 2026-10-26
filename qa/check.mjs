@@ -101,7 +101,7 @@ try {
       await page.locator("[data-clear-city]").click();
       assert.equal(await page.locator("#place-grid .place-card").count(), 6);
       await page.locator("#show-more").click();
-      assert.equal(await page.locator("#place-grid .place-card").count(), 8);
+      assert.equal(await page.locator("#place-grid .place-card").count(), 24);
       assert.equal(await page.locator("#show-more").isVisible(), false);
     },
   );
@@ -323,7 +323,7 @@ try {
     "Interactive map has selectable city controls and usable attribution",
     async () => {
       const cities = page.locator("#map-cities button");
-      assert.equal(await cities.count(), 4);
+      assert.equal(await cities.count(), 12);
       await cities.nth(1).click();
       assert.ok(
         (await page.locator("#travel-map").innerText()).trim().length > 0,

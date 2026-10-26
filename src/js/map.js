@@ -67,9 +67,19 @@ function textFor(value, lang) {
 }
 function cityFor(city, lang) {
   return lang === "de"
-    ? { Lisbon: "Lissabon", Copenhagen: "Kopenhagen", Florence: "Florenz" }[
-        city
-      ] || city
+    ? {
+        Lisbon: "Lissabon",
+        Copenhagen: "Kopenhagen",
+        Florence: "Florenz",
+        Paris: "Paris",
+        Barcelona: "Barcelona",
+        Amsterdam: "Amsterdam",
+        Porto: "Porto",
+        Istanbul: "Istanbul",
+        "New York": "New York",
+        Seoul: "Seoul",
+        Marrakech: "Marrakesch",
+      }[city] || city
     : city;
 }
 function element(tag, className, text) {

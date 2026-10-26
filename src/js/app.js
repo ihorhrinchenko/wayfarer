@@ -39,6 +39,8 @@ const state = {
   city: "",
   sort: "recommended",
   all: false,
+  destinationsExpanded: false,
+  experiencesExpanded: false,
   mapCity: "Lisbon",
   mapPlaceId: null,
   detail: null,
@@ -51,9 +53,19 @@ const t = (key, replacements = {}) =>
   );
 const cityName = (city) =>
   state.lang === "de"
-    ? { Lisbon: "Lissabon", Copenhagen: "Kopenhagen", Florence: "Florenz" }[
-        city
-      ] || city
+    ? {
+        Lisbon: "Lissabon",
+        Copenhagen: "Kopenhagen",
+        Florence: "Florenz",
+        Paris: "Paris",
+        Barcelona: "Barcelona",
+        Amsterdam: "Amsterdam",
+        Porto: "Porto",
+        Istanbul: "Istanbul",
+        "New York": "New York",
+        Seoul: "Seoul",
+        Marrakech: "Marrakesch",
+      }[city] || city
     : city;
 const loc = (location) =>
   state.lang === "de"
@@ -90,6 +102,8 @@ const icons = {
     '<rect x="3" y="3" width="18" height="13" rx="2"/><path d="M8 21h8m-4-5v5"/>',
   menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
   close: '<path d="m6 6 12 12M6 18 18 6"/>',
+  arrowLeft: '<path d="m15 18-6-6 6-6"/>',
+  arrowRight: '<path d="m9 18 6-6-6-6"/>',
   grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
   culture: '<path d="m3 9 9-6 9 6H3Zm0 12h18M5 10v8m5-8v8m4-8v8m5-8v8"/>',
   food: '<path d="M5 3v7m3-7v7m-6-7v7a3 3 0 0 0 6 0M5 13v8M19 3c-4 4-4 9 0 9V3Zm0 9v9"/>',
@@ -115,6 +129,9 @@ const icons = {
 };
 const icon = (name) =>
   `<svg viewBox="0 0 24 24" aria-hidden="true">${icons[name] || icons.compass}</svg>`;
+$$('[data-close]').forEach((button) => (button.innerHTML = icon("close")));
+$("#lightbox-prev").innerHTML = icon("arrowLeft");
+$("#lightbox-next").innerHTML = icon("arrowRight");
 $$("[data-icon]").forEach((el) => (el.innerHTML = icon(el.dataset.icon)));
 $(".saved-icon").innerHTML = icon("heart");
 $(".location-icon").innerHTML = icon("pin");
@@ -183,13 +200,39 @@ function toggleSaved(id) {
 function photoTag(item, css = "") {
   return `<img class="${css}" src="${esc(item.image)}" alt="${esc(item.alt[state.lang])}" width="640" height="480" loading="lazy" decoding="async">`;
 }
+function updateCollectionToggle(
+  selector,
+  expanded,
+  items,
+  initialCount,
+  more,
+  less,
+) {
+  const button = $(selector);
+  button.hidden = items.length <= initialCount;
+  button.setAttribute("aria-expanded", String(expanded));
+  button.innerHTML =
+    `<span>${esc(t(expanded ? less : more))}</span>` +
+    `<span aria-hidden="true">${expanded ? "↑" : "↓"}</span>`;
+}
 function renderDestinations() {
-  $("#destination-grid").innerHTML = destinations
+  const visible = state.destinationsExpanded
+    ? destinations
+    : destinations.slice(0, 4);
+  $("#destination-grid").innerHTML = visible
     .map(
       (d) =>
         `<button class="destination-card" data-city="${d.id}">${photoTag(d)}<div class="destination-card-content"><span class="destination-country">${esc(d.country[state.lang])}</span><h3>${cityName(d.city)}</h3><div class="destination-card-bottom"><span>${d.count} ${t("placesUnit")} · ${t("cityGuides")}</span><span class="circle-arrow" aria-hidden="true">↗</span></div></div></button>`,
     )
     .join("");
+  updateCollectionToggle(
+    "#destination-more",
+    state.destinationsExpanded,
+    destinations,
+    4,
+    "showAllDestinations",
+    "showFewerDestinations",
+  );
 }
 function renderFilters() {
   $("#filter-tabs").innerHTML = ["all", "culture", "food", "outdoors", "hidden"]
@@ -262,12 +305,23 @@ function resetFilters() {
   renderPlaces();
 }
 function renderExperiences() {
-  $("#experience-grid").innerHTML = experiences
+  const visible = state.experiencesExpanded
+    ? experiences
+    : experiences.slice(0, 3);
+  $("#experience-grid").innerHTML = visible
     .map(
       (e) =>
         `<button class="experience-card" data-experience="${e.id}"><div class="experience-image">${photoTag(e)}<span class="experience-tag">${t("selfGuided")}</span><span class="circle-arrow" aria-hidden="true">↗</span></div><div class="experience-meta"><span>${cityName(e.city)}</span><span>${e.duration[state.lang]}</span></div><h3>${e.title[state.lang]}</h3><p>${e.description[state.lang]}</p></button>`,
     )
     .join("");
+  updateCollectionToggle(
+    "#experience-more",
+    state.experiencesExpanded,
+    experiences,
+    3,
+    "showAllExperiences",
+    "showFewerExperiences",
+  );
 }
 function renderGallery() {
   $("#gallery-grid").innerHTML = gallery
@@ -562,6 +616,14 @@ document.addEventListener("click", (event) => {
   if (!target) return;
   if (target.dataset.save) toggleSaved(target.dataset.save);
   if (target.dataset.detail) showDetails(target.dataset.detail);
+  if (target.id === "destination-more") {
+    state.destinationsExpanded = !state.destinationsExpanded;
+    renderDestinations();
+  }
+  if (target.id === "experience-more") {
+    state.experiencesExpanded = !state.experiencesExpanded;
+    renderExperiences();
+  }
   if (target.dataset.city) {
     const d = destinations.find((d) => d.id === target.dataset.city);
     state.city = d.city;

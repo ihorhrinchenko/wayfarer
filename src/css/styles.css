@@ -232,8 +232,15 @@ svg {
   height: 38px;
   display: grid;
   place-items: center;
+  padding: 0;
+  line-height: 1;
   border-radius: 50%;
   transition: background 0.2s;
+}
+.dialog-close svg,
+.lightbox-close svg {
+  width: 19px;
+  height: 19px;
 }
 .icon-button:hover {
   background: var(--soft);
@@ -695,6 +702,11 @@ svg {
 .destination-caption .small-compass {
   font-size: 20px;
 }
+.collection-more {
+  display: flex;
+  width: max-content;
+  margin: 18px auto 0;
+}
 
 .explore-section {
   background: var(--soft);
@@ -1018,6 +1030,9 @@ svg {
   grid-template-columns: repeat(3, 1fr);
   gap: 23px;
 }
+.experience-more {
+  margin-top: 28px;
+}
 .experience-card {
   padding: 0;
   text-align: left;
@@ -1111,6 +1126,9 @@ svg {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  max-height: 360px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .map-city {
   display: flex;
@@ -1934,10 +1952,17 @@ dialog::backdrop {
   z-index: 2;
   width: 45px;
   height: 45px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  line-height: 1;
   border: 1px solid #ffffff55;
   border-radius: 50%;
   color: white;
-  font-size: 24px;
+}
+.lightbox-arrow svg {
+  width: 22px;
+  height: 22px;
 }
 .lightbox-arrow:hover {
   background: #ffffff20;
@@ -2482,7 +2507,9 @@ dialog::backdrop {
   .map-cities {
     flex-direction: row;
     gap: 6px;
-    overflow: auto;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
   .map-city {
     padding: 8px 10px;
