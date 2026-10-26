@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f8f7f3" />
+    <meta
+      name="description"
+      content="A little curiosity, a world of possibilities. Discover thoughtful city guides, beautiful places and everyday adventures with Wayfarer."
+    />
+    <meta property="og:title" content="Wayfarer — A world worth wandering" />
+    <meta
+      property="og:description"
+      content="Thoughtful city guides for your kind of adventure. Explore Lisbon, Copenhagen, Kyoto and Florence."
+    />
+    <meta property="og:type" content="website" />
+    <title>Wayfarer — A world worth wandering</title>
+    <link rel="icon" href="./src/images/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      as="image"
+      href="./src/images/hero.webp"
+      fetchpriority="high"
+    />
+    <link rel="stylesheet" href="./src/css/fonts.css" />
+    <link rel="stylesheet" href="./src/css/styles.css" />
+    <link rel="stylesheet" href="./src/css/map.css" />
+    <script>
+      try {
+        const t = localStorage.getItem("wayfarer-theme") || "system";
+        document.documentElement.dataset.theme =
+          t === "system"
+            ? matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light"
+            : t;
+        document.documentElement.lang =
+          localStorage.getItem("wayfarer-lang") === "de" ? "de" : "en";
+      } catch (e) {}
+    </script>
+    <script type="module" src="./src/js/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main" data-i18n="skip">Skip to content</a>
+    <header class="site-header">
+      <div class="nav-shell">
+        <a class="brand" href="#home" aria-label="Wayfarer home"
+          ><span class="brand-mark" aria-hidden="true">✳</span>wayfarer<span
+            class="brand-period"
+            >.</span
+          ></a
+        >
+        <nav class="desktop-nav" aria-label="Main navigation">
+          <a href="#destinations" data-i18n="navDestinations">Destinations</a
+          ><a href="#explore" data-i18n="navExplore">Explore places</a
+          ><a href="#experiences" data-i18n="navExperiences">Experiences</a
+          ><a href="#about" data-i18n="navAbout">Our story</a>
+        </nav>
+        <div class="nav-actions">
+          <button
+            class="language-button"
+            id="language-button"
+            aria-label="Switch to German"
+          >
+            <span id="language-label">EN</span
+            ><span class="chevron" aria-hidden="true">⌄</span>
+          </button>
+          <div class="theme-picker">
+            <button
+              class="icon-button"
+              id="theme-button"
+              aria-expanded="false"
+              aria-controls="theme-menu"
+              aria-label="Choose color theme"
+            ></button>
+            <div id="theme-menu" class="theme-menu" hidden>
+              <button data-theme-choice="light" data-i18n="themeLight">
+                Light</button
+              ><button data-theme-choice="dark" data-i18n="themeDark">
+                Dark</button
+              ><button data-theme-choice="system" data-i18n="themeSystem">
+                System
+              </button>
+            </div>
+          </div>
+          <button class="saved-button" id="saved-button">
+            <span class="saved-icon"></span
+            ><span class="saved-label" data-i18n="saved">Saved</span>&#32;<span
+              id="saved-count"
+              >0</span
+            >
+          </button>
+          <button
+            class="icon-button menu-toggle"
+            id="menu-toggle"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+            aria-label="Open menu"
+          ></button>
+        </div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation" hidden>
+        <a href="#destinations" data-i18n="navDestinations">Destinations</a
+        ><a href="#explore" data-i18n="navExplore">Explore places</a
+        ><a href="#experiences" data-i18n="navExperiences">Experiences</a
+        ><a href="#about" data-i18n="navAbout">Our story</a
+        ><a href="#contact" data-i18n="navContact">Get in touch</a>
+      </nav>
+    </header>
+    <main id="main">
+      <section id="home" class="hero-wrap">
+        <div class="hero">
+          <img
+            class="hero-image"
+            src="./src/images/hero.webp"
+            alt="Colorful coastal village above the turquoise Mediterranean Sea in Cinque Terre, Italy"
+            width="1800"
+            height="1200"
+            fetchpriority="high"
+          />
+          <div class="hero-shade"></div>
+          <div class="hero-content">
+            <span class="eyebrow light"
+              ><span class="tiny-star">✳</span
+              ><span data-i18n="heroEyebrow"
+                >FOR THE BEAUTIFULLY CURIOUS</span
+              ></span
+            >
+            <h1 data-i18n-html="heroTitle">
+              Less ordinary.<br />More <em>out there.</em>
+            </h1>
+            <p data-i18n="heroText">
+              The little streets. The local favorites. The places that stay with
+              you. Find your next somewhere.
+            </p>
+            <a class="hero-link" href="#explore"
+              ><span data-i18n="heroCta">Find your kind of adventure</span
+              ><span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <div class="hero-location">
+            <span class="location-icon"></span
+            ><span>Cinque Terre, <span data-i18n="italy">Italy</span></span
+            ><span class="location-line"></span><span>44°07′ N · 9°42′ E</span>
+          </div>
+          <span class="hero-index" data-i18n="heroIndex"
+            >TAKE THE SCENIC ROUTE</span
+          >
+        </div>
+        <form class="hero-search" id="hero-search" role="search">
+          <div class="search-field destination-input">
+            <span class="search-field-icon"></span
+            ><label for="destination-search" data-i18n="searchLabel"
+              >Where are you dreaming of?</label
+            ><input
+              id="destination-search"
+              name="destination"
+              type="search"
+              data-i18n-placeholder="searchPlaceholder"
+              placeholder="City, place or a little inspiration…"
+              autocomplete="off"
+            />
+          </div>
+          <div class="search-field search-interest">
+            <label for="hero-interest" data-i18n="interestLabel"
+              >Your kind of adventure</label
+            ><select id="hero-interest" name="interest">
+              <option value="all" data-i18n="allExperiences">
+                A bit of everything
+              </option>
+              <option value="culture" data-i18n="culture">Art & culture</option>
+              <option value="food" data-i18n="food">Food & drink</option>
+              <option value="outdoors" data-i18n="outdoors">
+                Great outdoors
+              </option>
+              <option value="hidden" data-i18n="hidden">Hidden gems</option>
+            </select>
+          </div>
+          <button type="submit" class="button button-primary">
+            <span data-i18n="searchButton">Let’s explore</span
+            ><span class="button-arrow" aria-hidden="true">↗</span>
+          </button>
+        </form>
+        <div class="hero-footnote">
+          <span
+            ><span class="small-compass">✳</span
+            ><span data-i18n="heroFootnote"
+              >Good places. Thoughtfully picked. Endlessly inspiring.</span
+            ></span
+          ><a href="#destinations" aria-label="Discover destinations">↓</a>
+        </div>
+      </section>
+
+      <section class="section destinations-section" id="destinations">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow" data-i18n="destEyebrow"
+              >THE START OF SOMETHING GOOD</span
+            >
+            <h2 data-i18n-html="destTitle">
+              Find your next <em>somewhere.</em>
+            </h2>
+          </div>
+          <a class="text-link" href="#explore"
+            ><span data-i18n="browsePlaces">Explore all places</span
+            ><span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <div class="destination-grid" id="destination-grid"></div>
+        <div class="destination-caption">
+          <span class="small-compass" aria-hidden="true">✳</span>
+          <p data-i18n="destCaption">
+            Big cities. Small discoveries. Always a different way to see the
+            world.
+          </p>
+        </div>
+      </section>
+
+      <section class="explore-section" id="explore">
+        <div class="section">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow" data-i18n="exploreEyebrow"
+                >WORTH TAKING THE LONG WAY</span
+              >
+              <h2 data-i18n-html="exploreTitle">
+                Go beyond <em>the obvious.</em>
+              </h2>
+              <p class="section-description" data-i18n="exploreText">
+                From your first coffee to that last golden hour. Make the city
+                yours.
+              </p>
+            </div>
+            <button class="text-link" id="map-jump">
+              <span data-i18n="viewMap">Explore on the map</span
+              ><span class="map-small"></span>
+            </button>
+          </div>
+          <div class="catalog-toolbar">
+            <div
+              class="filter-tabs"
+              id="filter-tabs"
+              role="group"
+              aria-label="Filter by category"
+            ></div>
+            <div class="catalog-search">
+              <span class="inline-search-icon"></span
+              ><input
+                type="search"
+                id="catalog-search"
+                data-i18n-placeholder="catalogSearch"
+                placeholder="Find a place…"
+                aria-label="Search places"
+              />
+            </div>
+          </div>
+          <div class="catalog-meta">
+            <p id="results-count" role="status"></p>
+            <div class="sort-control">
+              <label for="sort-select" data-i18n="sortBy">Sort by:</label
+              ><select id="sort-select">
+                <option value="recommended" data-i18n="recommended">
+                  Our favorites
+                </option>
+                <option value="rating" data-i18n="highestRated">
+                  Highest rated
+                </option>
+                <option value="name" data-i18n="alphabetical">Name A–Z</option>
+              </select>
+            </div>
+          </div>
+          <div id="active-filters" class="active-filters" hidden></div>
+          <div class="place-grid" id="place-grid"></div>
+          <div class="catalog-bottom">
+            <span data-i18n="catalogNote"
+              >A small collection. A whole lot to discover.</span
+            ><button class="button button-outline" id="show-more">
+              <span data-i18n="showMore">Discover more places</span
+              ><span aria-hidden="true">↓</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section experiences-section" id="experiences">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow" data-i18n="experienceEyebrow"
+              >COLLECT MOMENTS, NOT THINGS</span
+            >
+            <h2 data-i18n-html="experienceTitle">
+              A story worth <em>bringing home.</em>
+            </h2>
+          </div>
+          <p class="heading-side-note" data-i18n="experienceText">
+            Slow down. Try something new.<br />Let a place surprise you.
+          </p>
+        </div>
+        <div class="experience-grid" id="experience-grid"></div>
+      </section>
+
+      <section class="map-section" id="map">
+        <div class="section">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow" data-i18n="mapEyebrow"
+                >FOLLOW YOUR CURIOSITY</span
+              >
+              <h2 data-i18n-html="mapTitle">
+                A world of possibilities.<br /><em>Right here.</em>
+              </h2>
+            </div>
+            <p class="heading-side-note" data-i18n="mapText">
+              A good day starts with a place on the map.<br />Pick a city and
+              see where it takes you.
+            </p>
+          </div>
+          <div class="map-layout">
+            <div class="map-sidebar">
+              <span class="eyebrow" data-i18n="chooseCity">PICK YOUR CITY</span>
+              <div id="map-cities" class="map-cities"></div>
+              <div class="map-sidebar-note">
+                <span class="small-compass" aria-hidden="true">✳</span>
+                <p data-i18n="mapTip">
+                  Leave a little room for getting wonderfully lost.
+                </p>
+              </div>
+            </div>
+            <div
+              id="travel-map"
+              role="region"
+              aria-label="Interactive map of curated places"
+            ></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section gallery-section" id="gallery">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow" data-i18n="galleryEyebrow"
+              >POSTCARDS FROM OUT THERE</span
+            >
+            <h2 data-i18n-html="galleryTitle">Wish you were <em>here.</em></h2>
+          </div>
+          <span class="gallery-note" data-i18n="galleryNote"
+            >A little window into the world. Tap to linger.</span
+          >
+        </div>
+        <div class="gallery-grid" id="gallery-grid"></div>
+      </section>
+
+      <section class="about-section" id="about">
+        <div class="section about-layout">
+          <div class="about-intro">
+            <span class="eyebrow" data-i18n="aboutEyebrow"
+              >A DIFFERENT WAY TO WANDER</span
+            >
+            <h2 data-i18n-html="aboutTitle">
+              Less planning.<br />More <em>being there.</em>
+            </h2>
+            <p data-i18n="aboutText">
+              We believe the best travel memories happen when you feel a little
+              less like a visitor. Wayfarer is a thoughtfully curated starting
+              point for a more personal kind of trip.
+            </p>
+            <a href="#contact" class="text-link"
+              ><span data-i18n="sayHello">Say hello to your next chapter</span
+              ><span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <div class="benefit-list">
+            <article>
+              <span class="benefit-icon" data-icon="compass"></span>
+              <div>
+                <h3 data-i18n="benefit1Title">Curated with curiosity</h3>
+                <p data-i18n="benefit1Text">
+                  A considered collection of places with character. Because more
+                  choice doesn’t always mean a better trip.
+                </p>
+              </div>
+              <span class="benefit-number">01</span>
+            </article>
+            <article>
+              <span class="benefit-icon" data-icon="heart"></span>
+              <div>
+                <h3 data-i18n="benefit2Title">Your trip, your rhythm</h3>
+                <p data-i18n="benefit2Text">
+                  Save what speaks to you, explore the map, and leave room for
+                  the unexpected. No packed itineraries required.
+                </p>
+              </div>
+              <span class="benefit-number">02</span>
+            </article>
+            <article>
+              <span class="benefit-icon" data-icon="leaf"></span>
+              <div>
+                <h3 data-i18n="benefit3Title">A little more mindful</h3>
+                <p data-i18n="benefit3Text">
+                  Walk a little further. Stay a little longer. Discover small
+                  businesses and enjoy the everyday life of a city.
+                </p>
+              </div>
+              <span class="benefit-number">03</span>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section testimonials-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow" data-i18n="testimonialEyebrow"
+              >DIFFERENT PEOPLE. SAME WANDERLUST.</span
+            >
+            <h2 data-i18n-html="testimonialTitle">
+              Good places. <em>Great stories.</em>
+            </h2>
+          </div>
+          <span class="demo-tag" data-i18n="sampleStories"
+            >Illustrative traveler stories</span
+          >
+        </div>
+        <div class="testimonial-grid">
+          <figure>
+            <div class="quote-mark" aria-hidden="true">“</div>
+            <blockquote data-i18n="quote1">
+              The kind of guide that feels like a recommendation from a friend
+              with really good taste. That little café in Lisbon? The highlight
+              of my trip.
+            </blockquote>
+            <figcaption>
+              <span class="avatar avatar-one">SL</span
+              ><span
+                ><strong>Sophie L.</strong
+                ><small data-i18n="quote1Location"
+                  >A weekend in Lisbon</small
+                ></span
+              ><span class="quote-star" aria-hidden="true">✳</span>
+            </figcaption>
+          </figure>
+          <figure>
+            <div class="quote-mark" aria-hidden="true">“</div>
+            <blockquote data-i18n="quote2">
+              I saved a few places, put my phone away, and just wandered. It was
+              the first time a city break actually felt like a break.
+            </blockquote>
+            <figcaption>
+              <span class="avatar avatar-two">JM</span
+              ><span
+                ><strong>Jonas M.</strong
+                ><small data-i18n="quote2Location"
+                  >Slow days in Copenhagen</small
+                ></span
+              ><span class="quote-star" aria-hidden="true">✳</span>
+            </figcaption>
+          </figure>
+          <figure>
+            <div class="quote-mark" aria-hidden="true">“</div>
+            <blockquote data-i18n="quote3">
+              Beautiful little discoveries I would have walked straight past.
+              The quieter side of Kyoto was exactly what I was looking for.
+            </blockquote>
+            <figcaption>
+              <span class="avatar avatar-three">AK</span
+              ><span
+                ><strong>Amelia K.</strong
+                ><small data-i18n="quote3Location"
+                  >A different side of Kyoto</small
+                ></span
+              ><span class="quote-star" aria-hidden="true">✳</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section faq-section" id="faq">
+        <div class="faq-intro">
+          <span class="eyebrow" data-i18n="faqEyebrow"
+            >A FEW THINGS TO KNOW</span
+          >
+          <h2 data-i18n-html="faqTitle">
+            A little clarity.<br /><em>Before you go.</em>
+          </h2>
+          <p data-i18n="faqText">Still curious about something?</p>
+          <a class="text-link" href="#contact"
+            ><span data-i18n="getInTouch">Let’s talk</span
+            ><span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <div class="faq-list" id="faq-list"></div>
+      </section>
+
+      <section class="contact-section" id="contact">
+        <div class="section contact-layout">
+          <div class="contact-intro">
+            <span class="eyebrow" data-i18n="contactEyebrow"
+              >EVERY ADVENTURE STARTS WITH A HELLO</span
+            >
+            <h2 data-i18n-html="contactTitle">
+              Have a place<br /><em>in mind?</em>
+            </h2>
+            <p data-i18n="contactText">
+              A favorite corner of your city, a travel question, or a little
+              feedback. We’d love to hear your story.
+            </p>
+            <span class="contact-star" aria-hidden="true">✳</span>
+          </div>
+          <div class="contact-form-wrap">
+            <div class="demo-notice">
+              <span class="notice-icon"></span>
+              <p data-i18n="demoNotice">
+                Portfolio demo. Your message stays on your device. This form
+                creates a downloadable draft and does not send email.
+              </p>
+            </div>
+            <form id="contact-form" novalidate>
+              <div class="form-row">
+                <div class="form-field">
+                  <label for="contact-name" data-i18n="nameLabel"
+                    >Your name</label
+                  ><input
+                    id="contact-name"
+                    name="name"
+                    autocomplete="name"
+                    required
+                    maxlength="80"
+                    placeholder="Alex Morgan"
+                    aria-describedby="name-error"
+                  /><span class="field-error" id="name-error"></span>
+                </div>
+                <div class="form-field">
+                  <label for="contact-email" data-i18n="emailLabel"
+                    >Email address</label
+                  ><input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                    maxlength="160"
+                    placeholder="alex@example.com"
+                    aria-describedby="email-error"
+                  /><span class="field-error" id="email-error"></span>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="contact-topic" data-i18n="topicLabel"
+                  >What’s on your mind?</label
+                ><select id="contact-topic" name="topic">
+                  <option
+                    value="recommendation"
+                    data-i18n="topicRecommendation"
+                  >
+                    Share a lovely place
+                  </option>
+                  <option value="question" data-i18n="topicQuestion">
+                    Ask a travel question
+                  </option>
+                  <option value="feedback" data-i18n="topicFeedback">
+                    Give feedback
+                  </option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="contact-message" data-i18n="messageLabel"
+                  >Your message</label
+                ><textarea
+                  id="contact-message"
+                  name="message"
+                  rows="4"
+                  minlength="15"
+                  maxlength="2000"
+                  required
+                  data-i18n-placeholder="messagePlaceholder"
+                  placeholder="Tell us a little more…"
+                  aria-describedby="message-error"
+                ></textarea>
+                <div class="textarea-meta">
+                  <span class="field-error" id="message-error"></span
+                  ><span id="message-count">0 / 2000</span>
+                </div>
+              </div>
+              <label class="checkbox-label"
+                ><input
+                  type="checkbox"
+                  id="contact-consent"
+                  required
+                  aria-describedby="consent-error"
+                /><span data-i18n="consentLabel"
+                  >I understand this is a local demo and nothing will be
+                  sent.</span
+                ></label
+              ><span class="field-error" id="consent-error"></span
+              ><button type="submit" class="button button-primary">
+                <span data-i18n="createDraft">Create message draft</span
+                ><span aria-hidden="true">↗</span>
+              </button>
+              <div id="form-result" role="status" hidden></div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="section footer-main">
+        <div class="footer-brand">
+          <a class="brand" href="#home"
+            ><span class="brand-mark" aria-hidden="true">✳</span>wayfarer<span
+              class="brand-period"
+              >.</span
+            ></a
+          >
+          <p data-i18n="footerTagline">
+            A world worth wandering.<br />A little closer to you.
+          </p>
+          <div class="social-links">
+            <a
+              href="https://www.instagram.com/explore/tags/cityguide/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="City guide inspiration on Instagram"
+              data-icon="instagram"
+            ></a
+            ><a
+              href="https://www.pinterest.com/search/pins/?q=city%20travel%20guide"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="City guide inspiration on Pinterest"
+              >p</a
+            ><button
+              id="share-site"
+              aria-label="Share Wayfarer"
+              data-icon="share"
+            ></button>
+          </div>
+        </div>
+        <div class="footer-column">
+          <h3 data-i18n="footerExplore">Go explore</h3>
+          <a href="#destinations" data-i18n="navDestinations">Destinations</a
+          ><a href="#explore" data-i18n="navExplore">Explore places</a
+          ><a href="#experiences" data-i18n="navExperiences">Experiences</a
+          ><a href="#map" data-i18n="footerMap">The map</a>
+        </div>
+        <div class="footer-column">
+          <h3 data-i18n="footerWayfarer">A little about us</h3>
+          <a href="#about" data-i18n="navAbout">Our story</a
+          ><a href="#gallery" data-i18n="footerGallery">Postcards</a
+          ><a href="#faq" data-i18n="footerFaq">Good to know</a
+          ><a href="#contact" data-i18n="navContact">Get in touch</a>
+        </div>
+        <div class="footer-note">
+          <span class="eyebrow" data-i18n="footerNoteLabel"
+            >MADE FOR THE WANDERERS</span
+          >
+          <p data-i18n-html="footerNote">
+            Take the scenic route.<br />It’s usually the <em>good one.</em>
+          </p>
+          <a href="#home" data-i18n="backToBeginning"
+            >Back to the beginning ↑</a
+          >
+        </div>
+      </div>
+      <div class="section footer-bottom">
+        <span data-i18n="copyright"
+          >© 2026 Wayfarer. A travel guide portfolio concept.</span
+        >
+        <div>
+          <button id="privacy-button" data-i18n="privacy">
+            Privacy & local data</button
+          ><button id="credits-button" data-i18n="credits">
+            About this demo</button
+          ><span data-i18n="madeWith">Made with curiosity ✳</span>
+        </div>
+      </div>
+    </footer>
+    <button id="back-top" class="back-top" aria-label="Back to top" hidden>
+      ↑
+    </button>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <dialog id="detail-dialog" class="detail-dialog">
+      <button
+        class="dialog-close icon-button"
+        data-close
+        aria-label="Close dialog"
+      >
+        ×
+      </button>
+      <div id="detail-content"></div>
+    </dialog>
+    <dialog
+      id="saved-dialog"
+      class="saved-dialog"
+      aria-labelledby="saved-title"
+    >
+      <div class="dialog-heading">
+        <div>
+          <span class="eyebrow" data-i18n="yourCollection"
+            >YOUR LITTLE COLLECTION</span
+          >
+          <h2 id="saved-title" data-i18n-html="savedTitle">
+            Places to <em>come back to.</em>
+          </h2>
+        </div>
+        <button
+          class="dialog-close icon-button"
+          data-close
+          aria-label="Close dialog"
+        >
+          ×
+        </button>
+      </div>
+      <div id="saved-content"></div>
+    </dialog>
+    <dialog id="lightbox" class="lightbox" aria-labelledby="lightbox-caption">
+      <button
+        class="lightbox-close icon-button"
+        data-close
+        aria-label="Close gallery"
+      >
+        ×</button
+      ><button
+        id="lightbox-prev"
+        class="lightbox-arrow"
+        aria-label="Previous photo"
+      >
+        ←
+      </button>
+      <figure>
+        <img id="lightbox-image" alt="" />
+        <figcaption id="lightbox-caption"></figcaption>
+      </figure>
+      <button id="lightbox-next" class="lightbox-arrow" aria-label="Next photo">
+        →</button
+      ><span id="lightbox-counter"></span>
+    </dialog>
+    <dialog id="info-dialog" class="info-dialog">
+      <button
+        class="dialog-close icon-button"
+        data-close
+        aria-label="Close dialog"
+      >
+        ×
+      </button>
+      <div id="info-content"></div>
+    </dialog>
+    <noscript
+      ><p class="noscript">
+        Please enable JavaScript to use the interactive travel guide, language
+        settings, map, and local demo form.
+      </p></noscript
+    >
+  </body>
+</html>

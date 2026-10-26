@@ -1,0 +1,16 @@
+{
+  "photography": "Photographs sourced from Unsplash. Food and coffee photographs illustrate the experience rather than a specific business.",
+  "images": {
+    "hero.webp": "https://images.unsplash.com/photo-1516483638261-f4dbaf036963",
+    "lisbon.webp": "https://unsplash.com/photos/Ea8JsGmWleg",
+    "copenhagen.webp": "https://images.unsplash.com/photo-1513622470522-26c3c8a854bc",
+    "kyoto.webp": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e",
+    "florence.webp": "https://unsplash.com/photos/jbTGxvpgryA",
+    "alfama.webp": "https://images.unsplash.com/photo-1548707309-dcebeab9ea9b",
+    "bamboo.webp": "https://unsplash.com/photos/gmAPFmHr9Lo",
+    "coffee.webp": "https://images.unsplash.com/photo-1442512595331-e89e73853f31",
+    "pasta.webp": "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
+    "coast.webp": "https://images.unsplash.com/photo-1533105079780-92b9be482077"
+  },
+  "fonts": "Manrope and Cormorant Garamond, downloaded via Google Fonts; licensed under the SIL Open Font License."
+}

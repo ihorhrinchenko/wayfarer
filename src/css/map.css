@@ -1,0 +1,328 @@
+.wayfarer-map-shell {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100%;
+  min-height: 350px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #e7ebe4;
+  color: #163c35;
+}
+.wayfarer-map-canvas {
+  height: 100%;
+  min-height: 350px;
+  width: 100%;
+  z-index: 0;
+  background: #e7ebe4;
+  font-family: inherit;
+}
+.wayfarer-map-canvas .leaflet-tile-pane {
+  filter: saturate(0.58) brightness(1.03);
+}
+.wayfarer-map-help {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.wayfarer-map-loading {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  background: #e9ede6;
+  color: #335e53;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+.wayfarer-map-legend {
+  position: absolute;
+  left: 22px;
+  top: 22px;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 14px;
+  border: 1px solid #e0e6dd;
+  border-radius: 7px;
+  background: #fffefaf2;
+  box-shadow: 0 2px 10px #163c3508;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+.wayfarer-map-legend[hidden] {
+  display: none;
+}
+.wayfarer-map-legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 100%;
+  background: #227568;
+  box-shadow: 0 0 0 4px #22756812;
+}
+.wayfarer-map-marker {
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: #226454;
+  border: 3px solid #fffff5;
+  box-shadow: 0 3px 13px #123a3540;
+  border-radius: 50% 50% 50% 3px;
+  transform-origin: center;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
+  font:
+    600 12px/1 "Manrope",
+    sans-serif;
+}
+.wayfarer-map-marker span {
+  transform: rotate(0);
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+.wayfarer-map-marker:hover,
+.wayfarer-map-marker.is-selected {
+  background: #d17d55;
+  box-shadow: 0 3px 13px #123a3560;
+}
+.wayfarer-map-marker:focus-visible {
+  outline: 3px solid #173e35;
+  outline-offset: 4px;
+}
+.wayfarer-map-shell .leaflet-control-zoom {
+  margin: 0 20px 28px 0;
+  border: 1px solid #dfe6dc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px #163c3510;
+}
+.wayfarer-map-shell .leaflet-control-zoom a {
+  color: #244f42;
+  background: #fffefb;
+  font-family: inherit;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  font-weight: 400;
+}
+.wayfarer-map-shell .leaflet-control-zoom a:hover {
+  background: #f2f5ee;
+}
+.wayfarer-map-shell .leaflet-control-attribution {
+  background: #fffefaeb;
+  color: #52645d;
+  font-size: 9px;
+  padding: 2px 7px;
+}
+.wayfarer-map-shell .leaflet-control-attribution a {
+  color: #345b4f;
+}
+.wayfarer-leaflet-popup .leaflet-popup-content-wrapper {
+  padding: 0;
+  overflow: hidden;
+  border-radius: 11px;
+  background: #fffefb;
+  color: #183e34;
+  box-shadow: 0 6px 24px #183e3429;
+}
+.wayfarer-leaflet-popup .leaflet-popup-content {
+  margin: 0;
+  width: 225px !important;
+  font-family: inherit;
+  line-height: 1.5;
+}
+.wayfarer-leaflet-popup .leaflet-popup-tip {
+  background: #fffefb;
+}
+.wayfarer-leaflet-popup .leaflet-popup-close-button {
+  border-radius: 50%;
+  background: #fffefb !important;
+  color: #153e34 !important;
+  top: 8px !important;
+  right: 8px !important;
+  width: 23px !important;
+  height: 23px !important;
+  font-size: 18px !important;
+  line-height: 23px !important;
+}
+.wayfarer-map-popup-photo {
+  display: block;
+  width: 100%;
+  height: 115px;
+  object-fit: cover;
+}
+.wayfarer-map-popup-info {
+  padding: 14px 17px 15px;
+}
+.wayfarer-map-popup-city {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #688174;
+}
+.wayfarer-map-popup h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 4px 0 12px;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+.wayfarer-map-popup-button {
+  border: 0;
+  background: none;
+  color: #2a715e;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 0;
+  text-align: left;
+}
+.wayfarer-map-popup-button:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.wayfarer-map-popup-button:focus-visible {
+  outline: 2px solid #2a715e;
+  outline-offset: 4px;
+}
+.wayfarer-map-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 500;
+  background: #eff2e9;
+  padding: 30px;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+.wayfarer-map-fallback-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #c8d5c5;
+  border-radius: 50%;
+  font-size: 23px;
+  margin-bottom: 7px;
+}
+.wayfarer-map-fallback h3 {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  margin: 4px 0 9px;
+}
+.wayfarer-map-fallback p {
+  max-width: 430px;
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 0 0 20px;
+  color: #56705e;
+}
+.wayfarer-map-fallback-places {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px 14px;
+  max-width: 660px;
+  width: 100%;
+}
+.wayfarer-map-fallback-place {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #fffdfa;
+  padding: 12px 14px;
+  border: 1px solid #dce5d6;
+  border-radius: 6px;
+  text-align: left;
+}
+.wayfarer-map-fallback-place button {
+  border: 0;
+  background: none;
+  color: #244e3d;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.wayfarer-map-fallback-place button:hover {
+  text-decoration: underline;
+}
+.wayfarer-map-fallback-place a {
+  font-size: 9px;
+  white-space: nowrap;
+  color: #517c63;
+  text-decoration: none;
+}
+.wayfarer-map-fallback-place a:hover {
+  text-decoration: underline;
+}
+[data-theme="dark"] .wayfarer-map-canvas .leaflet-tile-pane {
+  filter: brightness(0.73) saturate(0.55) invert(0.89) hue-rotate(170deg);
+}
+[data-theme="dark"] .wayfarer-map-shell {
+  background: #283b32;
+  color: #dce6d9;
+}
+[data-theme="dark"] .wayfarer-map-legend,
+[data-theme="dark"] .wayfarer-map-shell .leaflet-control-zoom a,
+[data-theme="dark"] .wayfarer-map-fallback {
+  background: #24362c;
+  color: #dce6d9;
+  border-color: #405145;
+}
+[data-theme="dark"] .wayfarer-map-fallback p {
+  color: #a3b8a6;
+}
+[data-theme="dark"] .wayfarer-map-fallback-place {
+  background: #2c4033;
+  border-color: #425345;
+}
+[data-theme="dark"] .wayfarer-map-fallback-place button,
+[data-theme="dark"] .wayfarer-map-fallback-place a {
+  color: #dce6d9;
+}
+@media (max-width: 600px) {
+  .wayfarer-map-legend {
+    left: 14px;
+    top: 14px;
+    font-size: 10px;
+  }
+  .wayfarer-map-fallback {
+    padding: 24px 16px;
+  }
+  .wayfarer-map-fallback-places {
+    grid-template-columns: 1fr;
+  }
+  .wayfarer-map-fallback h3 {
+    font-size: 18px;
+  }
+  .wayfarer-map-shell .leaflet-control-zoom {
+    margin: 0 14px 25px 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wayfarer-map-marker {
+    transition: none;
+  }
+}

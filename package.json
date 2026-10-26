@@ -1,0 +1,27 @@
+{
+  "name": "wayfarer-city-guide",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A bilingual editorial travel guide portfolio built with modern browser APIs.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "node scripts/preview.mjs",
+    "pretest": "npm run build",
+    "test": "node qa/check.mjs",
+    "pretest:a11y": "npm run build",
+    "test:a11y": "node qa/accessibility.mjs",
+    "format": "prettier --write index.html vite.config.js src scripts qa/*.mjs public/credits.json package.json README.md",
+    "check": "prettier --check index.html vite.config.js src scripts qa/*.mjs public/credits.json package.json README.md"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "playwright-core": "^1.58.0",
+    "prettier": "^3.9.10",
+    "vite": "^8.3.5"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
